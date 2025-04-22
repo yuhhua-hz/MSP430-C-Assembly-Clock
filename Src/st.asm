@@ -12,10 +12,10 @@
             .retain                         ; Preserva la sección en el enlace
             .retainrefs                     ; Preserva referencias a esta sección
 
-			.bss         SystemTimer, 4     ; Variable SystemTimer de 4 Bytes
-			.bss         stPeriodo, 2       ; Variable para guardar el periodo
+            .bss         SystemTimer, 4     ; Variable SystemTimer de 4 Bytes
+            .bss         stPeriodo, 2       ; Variable para guardar el periodo
 
-			.global stIni, stTime, stSec
+            .global stIni, stTime, stSec
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @fn stIni
@@ -32,10 +32,10 @@ stIni        mov.w     R12,    &stPeriodo   ; Guarda el periodo en variable glob
              mov.w     R12, &TA2CCR0        ; Establece el valor de comparación
              bic.w     #CCIFG, &TA2CCTL0    ; Limpia la bandera de interrupción
              bis.w     #CCIE, &TA2CCTL0     ; Activa la interrupción en el registro
-		     nop
-		     eint                           ; Activa interrupciones globales
-		     nop
-		     ret
+             nop
+             eint                           ; Activa interrupciones globales
+             nop
+             ret
 
 
 
@@ -49,11 +49,11 @@ stIni        mov.w     R12,    &stPeriodo   ; Guarda el periodo en variable glob
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-stA2ISR      add.w  	#1, &SystemTimer         ; Incrementa SystemTimer (parte baja)
-			 addc.w 	#0, &SystemTimer+2       ; Si hay acarreo, incrementa parte alta
-			 add.w      &stPeriodo, &TA2CCR0     ; Ajusta el siguiente valor de comparación
-			 bic.w      #LPM4, 0(SP)             ; Sale de modo de bajo consumo
-		     reti
+stA2ISR      add.w      #1, &SystemTimer         ; Incrementa SystemTimer (parte baja)
+             addc.w     #0, &SystemTimer+2       ; Si hay acarreo, incrementa parte alta
+             add.w      &stPeriodo, &TA2CCR0     ; Ajusta el siguiente valor de comparación
+             bic.w      #LPM4, 0(SP)             ; Sale de modo de bajo consumo
+             reti
 
 
 ;-------------------------------------------------------------------------------------------------------------
@@ -65,16 +65,16 @@ stA2ISR      add.w  	#1, &SystemTimer         ; Incrementa SystemTimer (parte ba
 ;; @return R12-R13 - Valor de 32 bits del contador de tiempo
 ;-------------------------------------------------------------------------------------------------------------
 
-stTime  	mov.w 		SR, R14               ; Guarda estado actual de interrupciones
-			nop
-			dint                              ; Deshabilita interrupciones
-			nop
-   			mov.w 		&SystemTimer, 	R12   ; Lee parte baja de SystemTimer
-   			mov.w 		&SystemTimer+2,	R13   ; Lee parte alta de SystemTimer
-   			nop
-   			mov.w 		R14, SR               ; Restaura estado previo de interrupciones
-   			nop
-   			ret
+stTime      mov.w       SR, R14               ; Guarda estado actual de interrupciones
+            nop
+            dint                              ; Deshabilita interrupciones
+            nop
+            mov.w       &SystemTimer,   R12   ; Lee parte baja de SystemTimer
+            mov.w       &SystemTimer+2, R13   ; Lee parte alta de SystemTimer
+            nop
+            mov.w       R14, SR               ; Restaura estado previo de interrupciones
+            nop
+            ret
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @brief Vector de interrupción para Timer2_A0
@@ -82,6 +82,6 @@ stTime  	mov.w 		SR, R14               ; Guarda estado actual de interrupciones
 ;;          de servicio stA2ISR cuando ocurre una interrupción del temporizador
 ;-------------------------------------------------------------------------------------------------------------
 
-	        .sect TIMER2_A0_VECTOR          ; Vector de interrupción Timer2_A0
-	        .word stA2ISR                   ; Dirección de la rutina de servicio
+            .sect TIMER2_A0_VECTOR          ; Vector de interrupción Timer2_A0
+            .word stA2ISR                   ; Dirección de la rutina de servicio
 
