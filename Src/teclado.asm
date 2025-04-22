@@ -13,15 +13,15 @@
             .retain                         ; Preserva la sección en el enlace
             .retainrefs                     ; Preserva referencias a esta sección
 
-			.global     kbIni, kbScan, kbGetc
-			.bss        Tecla, 1           ; Variable para almacenar última tecla pulsada
+            .global     kbIni, kbScan, kbGetc
+            .bss        Tecla, 1           ; Variable para almacenar última tecla pulsada
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @brief Definiciones de constantes temporales
 ;; @details Parámetros para el control del tiempo anti-rebote
 ;-------------------------------------------------------------------------------------------------------------
 frecACLK    .equ 32768               ; Frecuencia del reloj ACLK en Hz
-frecEsp     .equ 100		         ; Frecuencia deseada para anti-rebote (100Hz = 10ms)
+frecEsp     .equ 100                 ; Frecuencia deseada para anti-rebote (100Hz = 10ms)
 espera      .equ frecACLK/frecEsp    ; Cálculo de ciclos para el temporizador
                                      
 
@@ -312,4 +312,3 @@ kbRebote  push.w R12
           .intvec     PORT2_VECTOR,     kbISR     ; Puerto 2 -> Rutina de detección
           .intvec     PORT3_VECTOR,     kbISR     ; Puerto 3 -> Rutina de detección
           .intvec     PORT4_VECTOR,     kbISR     ; Puerto 4 -> Rutina de detección
-
