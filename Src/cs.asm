@@ -11,7 +11,7 @@
             .retain                         ; Preserva la sección en el enlace
             .retainrefs                     ; Preserva referencias a esta sección
 
-	    .global csIniLf                 
+	    	.global csIniLf                 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -29,8 +29,8 @@ csIniLf     bic.b #BIT4,&PJSEL1             ; Configura pin PJ.4 como función L
             bic.w #LFXTOFF,&CSCTL4          ; Activa oscilador LFXT
 
 ; Bucle de espera a que el oscilador se estabilice
-EsperaLFXT  bic.w #LFXTOFFG,&CSCTL5	    ; Borra bandera de fallo del oscilador LFXT
-	    bic.w #OFIFG, &SFRIFG1          ; Borra bandera de fallo del oscilador global
+EsperaLFXT  bic.w #LFXTOFFG,&CSCTL5	    	; Borra bandera de fallo del oscilador LFXT
+	    	bic.w #OFIFG, &SFRIFG1          ; Borra bandera de fallo del oscilador global
             bit.w #LFXTOFFG,&CSCTL5         ; Comprueba si la bandera sigue activa
             jnz   EsperaLFXT                ; Si la bandera está activa, sigue esperando
 
