@@ -11,8 +11,8 @@
             .retain                         ; Preserva la sección en el enlace
             .retainrefs                     ; Preserva referencias a esta sección
 
-			.global ledIni1, ledIni2, ledSet1, ledSet2
-			
+            .global ledIni1, ledIni2, ledSet1, ledSet2
+            
 ;-------------------------------------------------------------------------------------------------------------
 ;; @fn ledIni1
 ;; @brief Inicializa el LED1 (rojo) del MSP430FR6989
@@ -21,9 +21,9 @@
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
             
-ledIni1		bis.b	#BIT0, &P1DIR		; P1.0 como salida (LED1 rojo)
-			bic.b	#BIT0, &P1OUT		; LED1 apagado
-			ret
+ledIni1     bis.b   #BIT0, &P1DIR       ; P1.0 como salida (LED1 rojo)
+            bic.b   #BIT0, &P1OUT       ; LED1 apagado
+            ret
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @fn ledIni2
@@ -33,9 +33,9 @@ ledIni1		bis.b	#BIT0, &P1DIR		; P1.0 como salida (LED1 rojo)
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-ledIni2		bis.b	#BIT7, &P9DIR		; P9.7 como salida (LED2 verde)
-			bic.b	#BIT7, &P9OUT		; LED2 apagado
-			ret
+ledIni2     bis.b   #BIT7, &P9DIR       ; P9.7 como salida (LED2 verde)
+            bic.b   #BIT7, &P9OUT       ; LED2 apagado
+            ret
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @fn ledSet1
@@ -45,12 +45,12 @@ ledIni2		bis.b	#BIT7, &P9DIR		; P9.7 como salida (LED2 verde)
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-ledSet1		rrc.w	 R12				; Desplaza bit 0 a Carry
-			jnc      led1off			; Si carry=0, apagar LED
-			bis.b	 #BIT0, &P1OUT		; Si carry=1, encender LED
-			ret
-led1off     bic.b	 #BIT0, &P1OUT		; Apagar LED
-			ret
+ledSet1     rrc.w    R12                ; Desplaza bit 0 a Carry
+            jnc      led1off            ; Si carry=0, apagar LED
+            bis.b    #BIT0, &P1OUT      ; Si carry=1, encender LED
+            ret
+led1off     bic.b    #BIT0, &P1OUT      ; Apagar LED
+            ret
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @fn ledSet2
@@ -60,10 +60,9 @@ led1off     bic.b	 #BIT0, &P1OUT		; Apagar LED
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-ledSet2	    rrc.w	 R12				; Desplaza bit 0 a Carry
-			jnc      led2off			; Si carry=0, apagar LED
-			bis.b	 #BIT7, &P9OUT		; Si carry=1, encender LED
-			ret
-led2off     bic.b	 #BIT7, &P9OUT		; Apagar LED
-			ret
-
+ledSet2     rrc.w    R12                ; Desplaza bit 0 a Carry
+            jnc      led2off            ; Si carry=0, apagar LED
+            bis.b    #BIT7, &P9OUT      ; Si carry=1, encender LED
+            ret
+led2off     bic.b    #BIT7, &P9OUT      ; Apagar LED
+            ret
