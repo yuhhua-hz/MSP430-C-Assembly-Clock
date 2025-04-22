@@ -12,7 +12,7 @@
             .retain                         ; Preserva la sección en el enlace
             .retainrefs                     ; Preserva referencias a esta sección
 
-			.global lcdIni, lcda2seg, lcdLPutc, lcdRPutc, lcdClear, lcdBat, Puntos
+            .global lcdIni, lcda2seg, lcdLPutc, lcdRPutc, lcdClear, lcdBat, Puntos
 
 ;-------------------------------------------------------------------------------------------------------------
 ;; @brief Definición de los registros del LCD
@@ -40,8 +40,8 @@ DIG6L       .equ    LCDM8           ; Dígito 6 parte baja
 DIG6H       .equ    LCDM9           ; Dígito 6 parte alta
 
 ; Registros de la batería
-BATA	    .equ 	LCDM14          ; Registros para segmentos pares de batería
-BATB	    .equ 	LCDM18          ; Registros para segmentos impares de batería
+BATA        .equ    LCDM14          ; Registros para segmentos pares de batería
+BATB        .equ    LCDM18          ; Registros para segmentos impares de batería
 MARCOBAT    .equ    BIT4            ; Bit para el marco de la batería
 
 ; Registros de los puntos separadores
@@ -58,7 +58,7 @@ PUN2        .equ    LCDM7           ; Registro para segundo punto
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-lcdIni		bis.w   #LCDDIV__32,  &LCDCCTL0  ; Configura divisor de frecuencia a 32
+lcdIni      bis.w   #LCDDIV__32,  &LCDCCTL0  ; Configura divisor de frecuencia a 32
             bis.w   #LCD4MUX,     &LCDCCTL0  ; Configura el LCD en modo 4-mux
             bis.w   #BIT1,        &LCDCCTL0  ; Modo de bajo consumo
 
@@ -88,47 +88,47 @@ lcdIni		bis.w   #LCDDIV__32,  &LCDCCTL0  ; Configura divisor de frecuencia a 32
 ;; @return Ninguno
 ;-------------------------------------------------------------------------------------------------------------
 
-lcdBat      cmp.b   #1,    	R12
-			jlo		finbat                  ; Si R12 < 1, termina
-			cmp.b   #2,    	R12
-			jz		bateri2                 ; Si R12 = 2, activa segmento 2
-			cmp.b   #3,   	R12
-			jz		bateri3                 ; Si R12 = 3, activa segmento 3
-			cmp.b   #4, 	R12
-			jz		bateri4                 ; Si R12 = 4, activa segmento 4
-			cmp.b   #5, 	R12
-			jz		bateri5                 ; Si R12 = 5, activa segmento 5
-			cmp.b   #6, 	R12
-			jz		bateri6                 ; Si R12 = 6, activa segmento 6
-			cmp.b   #7, 	R12
-			jhs		finbat                  ; Si R12 >= 7, termina
+lcdBat      cmp.b   #1,     R12
+            jlo     finbat                  ; Si R12 < 1, termina
+            cmp.b   #2,     R12
+            jz      bateri2                 ; Si R12 = 2, activa segmento 2
+            cmp.b   #3,     R12
+            jz      bateri3                 ; Si R12 = 3, activa segmento 3
+            cmp.b   #4,     R12
+            jz      bateri4                 ; Si R12 = 4, activa segmento 4
+            cmp.b   #5,     R12
+            jz      bateri5                 ; Si R12 = 5, activa segmento 5
+            cmp.b   #6,     R12
+            jz      bateri6                 ; Si R12 = 6, activa segmento 6
+            cmp.b   #7,     R12
+            jhs     finbat                  ; Si R12 >= 7, termina
 
-			; Caso para segmento 1
-			mov.b   #BIT5+MARCOBAT,&BATB    ; Activa segmento 1 y marco
-			mov.b 	#0+MARCOBAT,&BATA       ; Solo mantiene marco en BATA
-			jmp		finbat
+            ; Caso para segmento 1
+            mov.b   #BIT5+MARCOBAT,&BATB    ; Activa segmento 1 y marco
+            mov.b   #0+MARCOBAT,&BATA       ; Solo mantiene marco en BATA
+            jmp     finbat
 
-bateri2	 	mov.b 	#BIT5+MARCOBAT,&BATA    ; Activa segmento 2 y marco
-			mov.b 	#0+MARCOBAT,&BATB       ; Solo mantiene marco en BATB
-			jmp 	finbat
+bateri2     mov.b   #BIT5+MARCOBAT,&BATA    ; Activa segmento 2 y marco
+            mov.b   #0+MARCOBAT,&BATB       ; Solo mantiene marco en BATB
+            jmp     finbat
 
-bateri3 	mov.b 	#BIT6+MARCOBAT,&BATB    ; Activa segmento 3 y marco
-			mov.b 	#0+MARCOBAT,&BATA
-			jmp 	finbat
+bateri3     mov.b   #BIT6+MARCOBAT,&BATB    ; Activa segmento 3 y marco
+            mov.b   #0+MARCOBAT,&BATA
+            jmp     finbat
 
-bateri4 	mov.b 	#BIT6+MARCOBAT,&BATA    ; Activa segmento 4 y marco
-			mov.b 	#0+MARCOBAT,&BATB
-			jmp 	finbat
+bateri4     mov.b   #BIT6+MARCOBAT,&BATA    ; Activa segmento 4 y marco
+            mov.b   #0+MARCOBAT,&BATB
+            jmp     finbat
 
-bateri5 	mov.b 	#BIT7+MARCOBAT,&BATB    ; Activa segmento 5 y marco
-			mov.b 	#0+MARCOBAT,&BATA
-			jmp 	finbat
+bateri5     mov.b   #BIT7+MARCOBAT,&BATB    ; Activa segmento 5 y marco
+            mov.b   #0+MARCOBAT,&BATA
+            jmp     finbat
 
-bateri6 	mov.b 	#BIT7+MARCOBAT,&BATA    ; Activa segmento 6 y marco
-			mov.b 	#0+MARCOBAT,&BATB
-			jmp 	finbat
+bateri6     mov.b   #BIT7+MARCOBAT,&BATA    ; Activa segmento 6 y marco
+            mov.b   #0+MARCOBAT,&BATB
+            jmp     finbat
 
-finbat		ret
+finbat      ret
 
 
 ;-------------------------------------------------------------------------------------------------------------
@@ -302,105 +302,105 @@ findch      ret
 ;; @note Cada carácter requiere 2 bytes en formato abcdefgm hjkpq-n-
 ;-------------------------------------------------------------------------------
 
-			;       abcdefgm   hjkpq-n-
-Tab14Seg	.byte	00000000b, 00000000b	;Espacio (32)
-			.byte	00000000b, 00000000b	;! (33)
-			.byte	00000000b, 00000000b	;" (34)
-			.byte	00000000b, 00000000b	;# (35)
-			.byte	00000000b, 00000000b	;$ (36)
-			.byte	00000000b, 00000000b	;% (37)
-			.byte	00000000b, 00000000b	;& (38)
-			.byte	00000000b, 00000000b	;' (39)
-			.byte	00000000b, 00000000b	;( (40)
-			.byte	00000000b, 00000000b	;) (41)
-			.byte	00000011b, 11111010b	;* (42)
-			.byte	00000011b, 01010000b	;+ (43)
-			.byte	00000000b, 00000000b	;, (44)
-			.byte	00000011b, 00000000b	;- (45)
-			.byte	00000000b, 00000000b	;. (46)
-			.byte	00000000b, 00101000b	;/ (47)
-			;       abcdefgm   hjkpq-n-
-			.byte	11111100b, 00101000b	;0 (48)
-			.byte	01100000b, 00100000b	;1 (49)
-			.byte	11011011b, 00000000b	;2 (50)
-			.byte	11110011b, 00000000b	;3 (51)
-			.byte	01100111b, 00000000b	;4 (52)
-				.byte	10110111b, 00000000b	;5 (53)
-			.byte	10111111b, 00000000b	;6 (54)
-			.byte	10000000b, 00110000b	;7 (55)
-			.byte	11111111b, 00000000b	;8 (56)
-			.byte	11100111b, 00000000b	;9 (57)
-			.byte	00000000b, 00000000b	;: (58)
-			.byte	00000000b, 00000000b	;; (59)
-			.byte	00000000b, 00100010b	;< (60)
-			.byte	00010011b, 00000000b	;= (61)
-			.byte	00000000b, 10001000b	;> (62)
-			.byte	00000000b, 00000000b	;? (63)
-			;       abcdefgm   hjkpq-n-
-			.byte	00000000b, 00000000b	;@ (64)
-			.byte	01100001b, 00101000b	;A (65)
-			.byte	11110001b, 01010000b	;B (66)
-			.byte	10011100b, 00000000b	;C (67)
-			.byte	11110000b, 01010000b	;D (68)
-			.byte	10011110b, 00000000b	;E (69)
-			.byte	10001110b, 00000000b	;F (70)
-			.byte	10111101b, 00000000b	;G (71)
-			.byte	01101111b, 00000000b	;H (72)
-			.byte	10010000b, 01010000b	;I (73)
-			.byte	01111000b, 00000000b	;J (74)
-			.byte	00001110b, 00100010b	;K (75)
-			.byte	00011100b, 00000000b	;L (76)
-			.byte	01101100b, 10100000b	;M (77)
-			.byte	01101100b, 10000010b	;N (78)
-			.byte	11111100b, 00000000b	;O (79)
-			;       abcdefgm   hjkpq-n-
-			.byte	11001111b, 00000000b	;P (80)
-			.byte	11111100b, 00000010b	;Q (81)
-			.byte	11001111b, 00000010b	;R (82)
-			.byte	10110111b, 00000000b	;S (83)
-			.byte	10000000b, 01010000b	;T (84)
-			.byte	01111100b, 00000000b	;U (85)
-			.byte	01100000b, 10000010b	;V (86)
-			.byte	01101100b, 00001010b	;W (87)
-			.byte	00000000b, 10101010b	;X (88)
-			.byte	00000000b, 10110000b	;Y (89)
-			.byte	10010000b, 00101000b	;Z (90)
-			.byte	10011100b, 00000000b	;[ (91)
-			.byte	00000000b, 10000010b	;\ (92)
-			.byte	11110000b, 00000000b	;] (93)
-			.byte	01000000b, 00100000b	;^ (94)
-			.byte	00010000b, 00000000b	;_ (95)
-			;       abcdefgm   hjkpq-n-
-			.byte	00000000b, 10000000b	;` (96)
-			.byte	00011010b, 00010000b	;a (97)
-			.byte	00111111b, 00000000b	;b (98)
-			.byte	00011011b, 00000000b	;c (99)
-			.byte	01111011b, 00000000b	;d (100)
-			.byte	11011111b, 00000000b	;e (101)
-			.byte	10001110b, 00000000b	;f (102)
-			.byte	11110111b, 00000000b	;g (103)
-			.byte	00101111b, 00000000b	;h (104)
-			.byte	00000000b, 00010000b	;i (105)
-			.byte	01110000b, 00000000b	;j (106)
-			.byte	00000000b, 01110010b	;k (107)
-			.byte	00000000b, 01010000b	;l (108)
-			.byte	00101011b, 00010000b	;m (109)
-			.byte	00101011b, 00000000b	;n (110)
-			.byte	00111011b, 00000000b	;o (111)
-			;       abcdefgm   hjkpq-n-
-			.byte	11001111b, 00000000b	;p (112)
-			.byte	11100111b, 00000000b	;q (113)
-			.byte	00000001b, 00010000b	;r (114)
-			.byte	10110111b, 00000000b	;s (115)
-			.byte	00010011b, 01010000b	;t (116)
-			.byte	00111000b, 00000000b	;u (117)
-			.byte	00100000b, 00000010b	;v (118)
-			.byte	00101000b, 00001010b	;w (119)
-			.byte	00000000b, 10101010b	;x (120)
-			.byte	01110001b, 01000000b	;y (121)
-			.byte	00010010b, 00001000b	;z (122)
-			.byte	00000000b, 00000000b	;{ (123)
-			.byte	00000000b, 00000000b	;| (124)
-			.byte	00000000b, 00000000b	;} (125)
-			.byte	00000000b, 00000000b	;~ (126)
-			.byte	00000000b, 00000000b	;DEL (127)
+            ;       abcdefgm   hjkpq-n-
+Tab14Seg    .byte   00000000b, 00000000b    ;Espacio (32)
+            .byte   00000000b, 00000000b    ;! (33)
+            .byte   00000000b, 00000000b    ;" (34)
+            .byte   00000000b, 00000000b    ;# (35)
+            .byte   00000000b, 00000000b    ;$ (36)
+            .byte   00000000b, 00000000b    ;% (37)
+            .byte   00000000b, 00000000b    ;& (38)
+            .byte   00000000b, 00000000b    ;' (39)
+            .byte   00000000b, 00000000b    ;( (40)
+            .byte   00000000b, 00000000b    ;) (41)
+            .byte   00000011b, 11111010b    ;* (42)
+            .byte   00000011b, 01010000b    ;+ (43)
+            .byte   00000000b, 00000000b    ;, (44)
+            .byte   00000011b, 00000000b    ;- (45)
+            .byte   00000000b, 00000000b    ;. (46)
+            .byte   00000000b, 00101000b    ;/ (47)
+            ;       abcdefgm   hjkpq-n-
+            .byte   11111100b, 00101000b    ;0 (48)
+            .byte   01100000b, 00100000b    ;1 (49)
+            .byte   11011011b, 00000000b    ;2 (50)
+            .byte   11110011b, 00000000b    ;3 (51)
+            .byte   01100111b, 00000000b    ;4 (52)
+                .byte   10110111b, 00000000b    ;5 (53)
+            .byte   10111111b, 00000000b    ;6 (54)
+            .byte   10000000b, 00110000b    ;7 (55)
+            .byte   11111111b, 00000000b    ;8 (56)
+            .byte   11100111b, 00000000b    ;9 (57)
+            .byte   00000000b, 00000000b    ;: (58)
+            .byte   00000000b, 00000000b    ;; (59)
+            .byte   00000000b, 00100010b    ;< (60)
+            .byte   00010011b, 00000000b    ;= (61)
+            .byte   00000000b, 10001000b    ;> (62)
+            .byte   00000000b, 00000000b    ;? (63)
+            ;       abcdefgm   hjkpq-n-
+            .byte   00000000b, 00000000b    ;@ (64)
+            .byte   01100001b, 00101000b    ;A (65)
+            .byte   11110001b, 01010000b    ;B (66)
+            .byte   10011100b, 00000000b    ;C (67)
+            .byte   11110000b, 01010000b    ;D (68)
+            .byte   10011110b, 00000000b    ;E (69)
+            .byte   10001110b, 00000000b    ;F (70)
+            .byte   10111101b, 00000000b    ;G (71)
+            .byte   01101111b, 00000000b    ;H (72)
+            .byte   10010000b, 01010000b    ;I (73)
+            .byte   01111000b, 00000000b    ;J (74)
+            .byte   00001110b, 00100010b    ;K (75)
+            .byte   00011100b, 00000000b    ;L (76)
+            .byte   01101100b, 10100000b    ;M (77)
+            .byte   01101100b, 10000010b    ;N (78)
+            .byte   11111100b, 00000000b    ;O (79)
+            ;       abcdefgm   hjkpq-n-
+            .byte   11001111b, 00000000b    ;P (80)
+            .byte   11111100b, 00000010b    ;Q (81)
+            .byte   11001111b, 00000010b    ;R (82)
+            .byte   10110111b, 00000000b    ;S (83)
+            .byte   10000000b, 01010000b    ;T (84)
+            .byte   01111100b, 00000000b    ;U (85)
+            .byte   01100000b, 10000010b    ;V (86)
+            .byte   01101100b, 00001010b    ;W (87)
+            .byte   00000000b, 10101010b    ;X (88)
+            .byte   00000000b, 10110000b    ;Y (89)
+            .byte   10010000b, 00101000b    ;Z (90)
+            .byte   10011100b, 00000000b    ;[ (91)
+            .byte   00000000b, 10000010b    ;\ (92)
+            .byte   11110000b, 00000000b    ;] (93)
+            .byte   01000000b, 00100000b    ;^ (94)
+            .byte   00010000b, 00000000b    ;_ (95)
+            ;       abcdefgm   hjkpq-n-
+            .byte   00000000b, 10000000b    ;` (96)
+            .byte   00011010b, 00010000b    ;a (97)
+            .byte   00111111b, 00000000b    ;b (98)
+            .byte   00011011b, 00000000b    ;c (99)
+            .byte   01111011b, 00000000b    ;d (100)
+            .byte   11011111b, 00000000b    ;e (101)
+            .byte   10001110b, 00000000b    ;f (102)
+            .byte   11110111b, 00000000b    ;g (103)
+            .byte   00101111b, 00000000b    ;h (104)
+            .byte   00000000b, 00010000b    ;i (105)
+            .byte   01110000b, 00000000b    ;j (106)
+            .byte   00000000b, 01110010b    ;k (107)
+            .byte   00000000b, 01010000b    ;l (108)
+            .byte   00101011b, 00010000b    ;m (109)
+            .byte   00101011b, 00000000b    ;n (110)
+            .byte   00111011b, 00000000b    ;o (111)
+            ;       abcdefgm   hjkpq-n-
+            .byte   11001111b, 00000000b    ;p (112)
+            .byte   11100111b, 00000000b    ;q (113)
+            .byte   00000001b, 00010000b    ;r (114)
+            .byte   10110111b, 00000000b    ;s (115)
+            .byte   00010011b, 01010000b    ;t (116)
+            .byte   00111000b, 00000000b    ;u (117)
+            .byte   00100000b, 00000010b    ;v (118)
+            .byte   00101000b, 00001010b    ;w (119)
+            .byte   00000000b, 10101010b    ;x (120)
+            .byte   01110001b, 01000000b    ;y (121)
+            .byte   00010010b, 00001000b    ;z (122)
+            .byte   00000000b, 00000000b    ;{ (123)
+            .byte   00000000b, 00000000b    ;| (124)
+            .byte   00000000b, 00000000b    ;} (125)
+            .byte   00000000b, 00000000b    ;~ (126)
+            .byte   00000000b, 00000000b    ;DEL (127)
